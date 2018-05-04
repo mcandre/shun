@@ -1,0 +1,65 @@
+#!/bin/sh
+
+usage() {
+    echo "$0 [<OPTION>] [<delay>]"
+    echo "Delay is always assumed to be now (immediately)"
+    echo "Options:"
+    echo "-h Halt (default)"
+    echo "-r Reboot"
+    echo "-q Quiet (default)"
+    echo "--help Show usage information"
+    echo "--version Show version information"
+}
+
+VERSION='0.0.1'
+
+NATIVE_SHUTDOWN='/bin/shutdown'
+REBOOT=''
+QUIET=''
+EXIT_STATUS_SHUNT=''
+
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+    --help)
+        usage
+        exit 1
+        ;;
+    --version)
+        echo "$VERSION"
+        exit
+        ;;
+    -h) ;;
+    -r)
+        REBOOT='-r'
+        ;;
+    -q) ;;
+    *)
+        break
+        ;;
+    esac
+
+    shift
+done
+
+uname -a | grep Haiku >/dev/null
+
+if [ "$?" -eq 0 ]; then
+    QUIET='-q'
+    EXIT_STATUS_SHUNT='; exit 0'
+fi
+
+COMMAND="$NATIVE_SHUTDOWN"
+
+if [ ! -z "$QUIET" ]; then
+    COMMAND="$COMMAND $QUIET"
+fi
+
+if [ ! -z "$REBOOT" ]; then
+    COMMAND="$COMMAND $REBOOT"
+fi
+
+if [ ! -z "$EXIT_STATUS_SHUNT" ]; then
+    COMMAND="${COMMAND}${EXIT_STATUS_SHUNT}"
+fi
+
+eval "$COMMAND"
