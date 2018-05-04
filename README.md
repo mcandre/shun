@@ -10,7 +10,7 @@ $ shutdown -h now
 
 shun is a wrapper for native `shutdown` commands, which tend to provide different flags for different particular UNIX distributions. shun does not attempt to support the vast majority of these many features, but rather provides a minimal syntax and semantics support, in order to help in porting shell scripts between different UNIX systems, where hardcoded and difficult to change commands may be invoked on systems with incompatible feature flags.
 
-Semantics are NOT guaranteed to behave identically: shun simply plugs into a compatible syntax, and assumes some default values. For example, shun's `shutdown` always assumes desired time = `now`. In fact, syntax is NEITHER guaranteed to be preserved, until such time as `getopt` is added to this implementation.
+Semantics are NOT guaranteed to behave identically: shun simply plugs into a compatible syntax, and assumes some default values. For example, shun's `shutdown` always assumes desired time = `now`. In fact, syntax is NEITHER guaranteed to be preserved; even after `getopt` is added to this implementation, flag incompatibilities between different systems will continue to present difficulties. Ah well.
 
 # INSTALL
 
