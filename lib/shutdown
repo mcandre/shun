@@ -41,24 +41,22 @@ while [ "$#" -gt 0 ]; do
     shift
 done
 
-uname -a | grep Haiku >/dev/null
-
-if [ "$?" -eq 0 ]; then
+if uname -a | grep Haiku >/dev/null; then
     QUIET='-q'
     EXIT_STATUS_SHUNT='; exit 0'
 fi
 
 COMMAND="$NATIVE_SHUTDOWN"
 
-if [ ! -z "$QUIET" ]; then
+if [ -n "$QUIET" ]; then
     COMMAND="$COMMAND $QUIET"
 fi
 
-if [ ! -z "$REBOOT" ]; then
+if [ -n "$REBOOT" ]; then
     COMMAND="$COMMAND $REBOOT"
 fi
 
-if [ ! -z "$EXIT_STATUS_SHUNT" ]; then
+if [ -n "$EXIT_STATUS_SHUNT" ]; then
     COMMAND="${COMMAND}${EXIT_STATUS_SHUNT}"
 fi
 
